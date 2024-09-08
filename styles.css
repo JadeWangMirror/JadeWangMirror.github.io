@@ -59,8 +59,8 @@ main {
 }
 
 aside {
-  width: 300px;
-  padding: 10px;
+  width: 300px; /* 侧边栏宽度 */
+  padding: 10px; /* 侧边栏内边距 */
   position: relative; /* 设置相对定位 */
   z-index: 1;        /* 确保侧边栏总是在背景之上 */
   float: right;      /* 保持原有的浮动布局 */
@@ -142,7 +142,7 @@ article .gallery img {
 .video-container {
   position: absolute;
   top: 150px;  /* 距离顶部100像素 */
-  left: 360px; /* 距离左边100像素 */
+  right: 330px; /* 距离左边100像素 */
   width: 960px; /* 宽度500像素 */
   height: 550px; /* 高度300像素 */
   overflow: hidden;
