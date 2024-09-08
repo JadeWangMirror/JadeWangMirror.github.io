@@ -1,0 +1,213 @@
+/* styles.css */
+body {
+  font-family: Arial, sans-serif;
+  background-image: url('background.jpeg'); /* 背景图像 */
+  background-size: cover;                 /* 图像大小自动调整以覆盖整个body元素 */
+  background-repeat: no-repeat;           /* 不重复背景图像 */
+  background-position: center top;        /* 图像定位在中心偏上 */
+}
+
+header, nav, footer {
+  text-align: center;
+}
+header {
+  text-align: center;
+  color: #ffffff; /* 设置header的背景颜色为白色 */
+  padding: 10px 0; /* 为header增加一些内边距 */
+  position: relative; /* 设置相对定位 */
+  z-index: 2;        /* 确保header总是在背景之上 */
+}
+footer {
+  color: #ffffff; /* 设置footer的文字颜色为白色 */
+}
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #352b84; /* 设置导航栏的背景颜色 */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: relative; /* 设置相对定位 */
+  z-index: 1;        /* 确保导航栏总是在背景之上 */
+}
+
+nav li {
+  margin-right: 10px;
+}
+
+nav li:last-child {
+  margin-right: 0;
+}
+
+nav li a {
+  display: block;
+  color: #ffffff;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+nav li a:hover {
+  background-color: #9474fc;
+}
+
+main {
+  display: flex;
+  justify-content: space-between;
+}
+
+aside {
+  width: 300px;
+  padding: 10px;
+  position: relative; /* 设置相对定位 */
+  z-index: 1;        /* 确保侧边栏总是在背景之上 */
+  float: right;      /* 保持原有的浮动布局 */
+  font-family: 'Georgia', serif; /* 设置侧边栏的字体 */
+  font-size: 16px; /* 字体大小 */
+  color: #ffffff; /* 文字颜色 */
+  line-height: 1.6; /* 行高 */
+  border-left: 1px dashed #ffffff; /* 移除左侧边框 */
+}
+
+aside a {
+  color: #ffffff; /* 设置aside中链接的颜色为白色 */
+  text-decoration: none; /* 去掉下划线 */
+}
+
+aside a:hover {
+  color: #cccccc; /* 设置hover状态下的链接颜色 */
+  text-decoration: underline; /* hover状态下显示下划线 */
+}
+h1 {
+  font-family: 'times new roman', monospace; /* 设置标题的字体 */
+  font-size: 1.8em; /* 标题字体大小 */
+  color: #ffffff; /* 文字颜色 */
+  line-height: 1.2; /* 行高 */
+}
+
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+footer {
+  position: absolute; /* 绝对定位 */
+  bottom: 0; /* 底部对齐 */
+  background-color: #5d4dba;
+  width: 100%; /* 宽度占据整个屏幕 */
+  padding: 8px 0; /* 上下内边距 */
+  text-align: center; /* 水平居中文本 */
+  color: #ffffff; /* 文字颜色 */
+}
+
+/* article 内的 section 样式 */
+/* 设置 section 的绝对定位并使其在页面缩放时不紊乱 */
+article > section1 {
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 5px;
+  color:#ffffff;
+  text-align: center; /* 水平居中文本 */
+  font-family: 'Times New Roman', serif; /* 设置标题的字体 */
+  position:fixed;
+  top: 35%; /* 使用视窗单位 */
+  left: 11%; /* 使用视窗单位 */
+  transform:translate(-50%, -50%); /* 保持此行以居中对齐 */
+  background-color:rgba(117, 68, 231, 0.5);
+  box-shadow: 0 0 10px rgb(255, 255, 255);
+  /* 添加最小宽度以防止过小 */
+  min-width: 300px;
+  /* 添加响应式媒体查询支持 */
+  @media (max-width: 600px) {
+    top: 60%; /* 小屏幕设备上稍微下移一些 */
+  }
+}
+
+article > section1 p {
+  font-size: 1.5em; /* 标题字体大小 */
+}
+article > section1 h2 {
+  font-size: 2em; /* 标题字体大小 */
+  margin-bottom: 10px;
+}
+/* 图片展示部分 */
+article .gallery img {
+  width: 100%;
+  height: auto;
+  border-radius: 5px; /* 圆角 */
+  margin-bottom: 10px;
+}
+.video-container {
+  position: absolute;
+  top: 150px;  /* 距离顶部100像素 */
+  left: 360px; /* 距离左边100像素 */
+  width: 960px; /* 宽度500像素 */
+  height: 550px; /* 高度300像素 */
+  overflow: hidden;
+  background-color: black;
+}
+/*picture 样式*/
+#max{
+  width: 575px; /* 图片宽度 */
+  height: 333px; /* 图片高度 */
+  align-items: center; /* 居中 */
+  margin: 5% auto; /* 居中 */
+  margin-top: 0%;   /* 距离顶部100像素 */
+}
+.re{
+  position: relative;   /* 相对定位 */
+  height: 400px; /* 图片高度 */
+}
+.re ul{
+  list-style-type:none ; /*去掉列表符号*/
+}
+.re ul>li{
+  width: 575px; /* 图片宽度 */
+  height: 333px; /* 图片高度 */
+  position: absolute; /* 绝对定位 */
+
+  transition: 0.5s; /* 过渡效果 */
+  opacity: 0; /* 初始透明度 */
+}
+.re ul>li img{
+  width: 575px; /* 图片宽度 */
+  height: 333px; /* 图片高度 */
+  border-radius: 2%;
+  border: 10px solid #352b84;
+}
+#max ol {
+  position:relative;
+  display: grid;
+  grid-template-columns: repeat(5,75px);
+  grid-template-rows: auto;
+  grid-gap: 0.1em;gap: 0.1em;
+  float: right; /* 保持原有的浮动布局 */
+  margin-top: 450px; /* 距离顶部100像素 */
+  list-style: none; /* 去掉列表符号 */
+  top:-150px; /* 距离顶部100像素 */
+  left:0; /* 距离左边100像素 */
+}
+#max ol li {
+  width: 20px;
+  height: 8px;
+  font-size: 7.5px;
+  line-height: 10px;
+  float: left;
+  text-align: center;
+  border-radius: 2em;
+  border: 3px solid #999999;
+}
+@keyframes cycleImages {
+  0% { left: 0%; }  /* 初始位置 */
+  20% { left: -100%; }  /* 向左移动 */
+  40% { left: -200%; }  /* 向左移动 */
+  60% { left: -300%; }  /* 向左移动 */
+  80% { left: -400%; }  /* 向左移动 */
+  100% { left: 0%; }  /* 回到初始位置 */
+}
+
+#max .re ul {
+  animation: cycleImages 10s linear infinite;
+}
