@@ -111,9 +111,9 @@ article > section1 {
   color:#ffffff;
   text-align: center; /* 水平居中文本 */
   font-family: 'Times New Roman', serif; /* 设置标题的字体 */
-  position:fixed;
-  top: 35%; /* 使用视窗单位 */
-  left: 11%; /* 使用视窗单位 */
+  position: absolute;
+  top: 290px;  /* 距离顶部100像素 */
+  left: 200px; /* 距离左边100像素 */
   transform:translate(-50%, -50%); /* 保持此行以居中对齐 */
   background-color:rgba(117, 68, 231, 0.5);
   box-shadow: 0 0 10px rgb(255, 255, 255);
