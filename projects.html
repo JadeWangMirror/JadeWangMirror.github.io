@@ -24,21 +24,54 @@
 
     <main>
       <!-- 网页主体内容 -->
-      <article>
-        <section2>
-          <div class="video-container">
-            <video controls
-            width="960"
-            height="550"
-            autoplay
-            loop
-            muted
-            preload="auto">
-            <source src="video1.mp4" type="video/mp4">
-          </video>
-          </div>
-        </section2> 
-      </article>
+      <div class="container">
+        <div class="video-list-container">
+            <ul class="video-list">
+                <li data-src="video1.mp4">Video 1</li>
+                <li data-src="video1.mp4">Video 2</li>
+                <li data-src="video1.mp4">Video 3</li>
+                <li data-src="video1.mp4">Video 4</li>
+                <li data-src="video1.mp4">Video 5</li>
+                <li data-src="video1.mp4">Video 6</li>
+            </ul>
+        </div>
+    </div>
+    <div class="video-container">
+        <video id="videoPlayer" controls width="960" height="550"></video>
+    </div>
+
+    <script>
+        document.querySelectorAll('.video-list li').forEach(item => {
+            item.addEventListener('click', function() {
+                const videoElement = document.getElementById('videoPlayer');
+                const videoSrc = this.getAttribute('data-src');
+                videoElement.src = videoSrc;
+                videoElement.play();
+            });
+        });
+    </script>
+    <script>
+      // 等待文档加载完成
+      document.addEventListener("DOMContentLoaded", function() {
+          // 选择所有带有数据属性 'data-src' 的列表项
+          const videoItems = document.querySelectorAll('.video-list li');
+  
+          // 为每个列表项添加点击事件监听器
+          videoItems.forEach(item => {
+              item.addEventListener('click', function() {
+                  const videoElement = document.getElementById('videoPlayer');
+                  const videoSrc = this.getAttribute('data-src');
+                  videoElement.src = videoSrc;
+                  videoElement.play();
+              });
+          });
+  
+          // 页面加载后自动播放第一个视频
+          if (videoItems.length > 0) {
+              videoItems[0].click(); // 模拟点击第一个列表项以播放视频
+          }
+      });
+  </script>
 
       <aside style="float:right; width:300px; padding:10px; border-left:1px solid #000;">
         <!-- 侧边栏在主内容右侧 -->
