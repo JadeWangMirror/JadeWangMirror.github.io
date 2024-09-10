@@ -253,15 +253,15 @@ article .gallery img {
 /*section2样式*/
 article > section2 {
   width: 1150px; /* 侧边栏宽度 */
-  margin-bottom: 20px;
-  padding: 50px;
+  margin-bottom: 5px;
+  padding: 30px;
   border-radius: 5px;
   color:#ffffff;
   text-align: center; /* 水平居中文本 */
   font-family: 'Times New Roman', serif; /* 设置标题的字体 */
   position: absolute;
-  top: 570px;  /* 距离顶部100像素 */
-  left: 653px; /* 距离左边100像素 */
+  top: 580px;  /* 距离顶部100像素 */
+  left: 633px; /* 距离左边100像素 */
   transform:translate(-50%, -50%); /* 保持此行以居中对齐 */
   background-color:rgba(117, 68, 231, 0.5);
   box-shadow: 0 0 10px rgb(255, 255, 255);
@@ -278,5 +278,5 @@ article > section2 p {
 }
 article > section2 h2 {
   font-size: 2em; /* 标题字体大小 */
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
