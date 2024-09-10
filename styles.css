@@ -249,3 +249,34 @@ article .gallery img {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* 鼠标悬停时加深阴影 */
   color:#352b84; /* 鼠标悬停时改变文字颜色 */
 }
+
+/*section2样式*/
+article > section2 {
+  width: 1150px; /* 侧边栏宽度 */
+  margin-bottom: 20px;
+  padding: 50px;
+  border-radius: 5px;
+  color:#ffffff;
+  text-align: center; /* 水平居中文本 */
+  font-family: 'Times New Roman', serif; /* 设置标题的字体 */
+  position: absolute;
+  top: 570px;  /* 距离顶部100像素 */
+  left: 653px; /* 距离左边100像素 */
+  transform:translate(-50%, -50%); /* 保持此行以居中对齐 */
+  background-color:rgba(117, 68, 231, 0.5);
+  box-shadow: 0 0 10px rgb(255, 255, 255);
+  /* 添加最小宽度以防止过小 */
+  min-width: 300px;
+  /* 添加响应式媒体查询支持 */
+  @media (max-width: 600px) {
+    top: 60%; /* 小屏幕设备上稍微下移一些 */
+  }
+}
+
+article > section2 p {
+  font-size: 1.5em; /* 标题字体大小 */
+}
+article > section2 h2 {
+  font-size: 2em; /* 标题字体大小 */
+  margin-bottom: 10px;
+}
