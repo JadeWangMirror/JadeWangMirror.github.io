@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+    <style>
+        /* 样式与登录页面保持一致 */
+    </style>
+</head>
+<body>
+    <h2>Register</h2>
+    <form action="http://localhost:3000/register" method="post">
+        <div>
+            <label for="uname"><b>Username</b></label>
+            <input type="text" placeholder="Enter Username" name="uname" required>
+
+            <label for="psw"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="psw" required>
+
+            <button type="submit"><a href="login.html">Register</a></button>
+        </div>
+        <div>
+            <span>Already have an account? <a href="login.html">Login</a></span>
+        </div>
+    </form>
+</body>
+</html>
