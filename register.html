@@ -3,24 +3,70 @@
 <head>
     <title>Register</title>
     <style>
-        /* 样式与登录页面保持一致 */
+        body { 
+            font-family: Arial, sans-serif;
+            background-image: url('background.jpeg');
+            background-size: cover;                 /* 图像大小自动调整以覆盖整个body元素 */
+            background-repeat: no-repeat;           /* 不重复背景图像 */
+                    /* 图像定位在中心偏上 */ }
+        .container { width: 300px; margin: 0 auto; }
+        h2 { text-align: center; 
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 2.5em;
+            color: #ffffff; }
+        form { 
+            border: 0px solid #ccc; 
+            padding: 40px; 
+            width: 800px;
+            position: absolute;
+            top: 200px;
+            left: 325px;
+            color:#ffffff;
+            }
+
+        input[type=text], input[type=password] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        button { 
+            background-color: #5a27a7; 
+            color: white; 
+            padding: 14px 20px; 
+            margin: 8px 0; 
+            border: none; 
+            cursor: pointer; 
+            width: 100%;
+        }
+        button:hover { opacity: 0.8; }
+        .clearfix { clear:both; }
+        .agree { margin-bottom: 15px; }
+        span { color: #ffffff; }
+        
     </style>
 </head>
 <body>
-    <h2>Register</h2>
-    <form action="http://localhost:3000/register" method="post">
-        <div>
-            <label for="uname"><b>Username</b></label>
-            <input type="text" placeholder="Enter Username" name="uname" required>
-
-            <label for="psw"><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" name="psw" required>
-
-            <button type="submit"><a href="login.html">Register</a></button>
-        </div>
-        <div>
-            <span>Already have an account? <a href="login.html">Login</a></span>
-        </div>
-    </form>
+    <div class="container">
+        <h2>Register</h2>
+        <form action="http://localhost:3000/register" method="post">
+            <div>
+                <label for="uname"><b>Username</b></label>
+                <input type="text" placeholder="Enter Username" name="uname" required>
+            </div>
+            <div>
+                <label for="psw"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="psw" required>
+            </div>
+            <div class="clearfix">
+                <button type="submit">Register</button>
+            </div>
+            <div>
+                <span>Already have an account? <a href="login.html">Login</a></span>
+            </div>
+        </form>
+    </div>
 </body>
 </html>

@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
@@ -58,19 +59,27 @@ app.post('/login', (req, res) => {
     const username = req.body.uname;
     const password = req.body.psw;
 
-    // 验证用户名和密码
-    const query = 'SELECT * FROM users WHERE username = ? AND `password` = ?';
-    db.query(query, [username, password], (err, results) => {
+    // 验证用户名
+    const query = 'SELECT * FROM users WHERE username = ?';
+    db.query(query, [username], (err, results) => {
         if (err) {
             console.error('数据库查询错误：', err);
             return res.status(500).send('服务器内部错误');
         }
 
-        if (results.length > 0) {
-            // 如果找到匹配的用户，重定向到 social.html
-            res.redirect('/social.html');
+        if (results.length === 1) {
+            // 使用bcrypt比较密码
+            bcrypt.compare(password, results[0].password, (compareErr, result) => {
+                if (compareErr || !result) {
+                    // 密码错误或比较过程中出现错误
+                    return res.send('<h1>Login Failed</h1><p>Invalid username or password.</p>');
+                }
+
+                // 如果密码匹配，重定向到 social.html
+                res.redirect('/social.html');
+            });
         } else {
-            // 用户名或密码错误
+            // 用户名不存在
             res.send('<h1>Login Failed</h1><p>Invalid username or password.</p>');
         }
     });
