@@ -260,6 +260,12 @@
     0%, 100% { transform: translateX(0); opacity: 1; }
     50% { transform: translateX(5px); opacity: 0.4; }
   }
+
+  /* Mobile overrides for index */
+  @media (max-width: 600px) {
+    .hero-desc { white-space: normal; font-size: 0.82rem; }
+    h1 { white-space: normal; }
+  }
 </style>
 </head>
 <body>
@@ -270,12 +276,16 @@
 
 <nav>
   <div class="nav-logo">JadeWang</div>
-  <ul class="nav-links">
+  <div class="nav-toggle" id="navToggle">
+    <span></span><span></span><span></span>
+  </div>
+  <ul class="nav-links" id="navLinks">
     <li><a href="index.html" class="active">Home</a></li>
     <li><a href="research.html">Research</a></li>
     <li><a href="blog.html">Blog</a></li>
     <li><a href="papers.html">Papers</a></li>
   </ul>
+  <div class="nav-overlay" id="navOverlay"></div>
 </nav>
 
 <div class="h-wrap">
