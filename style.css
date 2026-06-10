@@ -199,6 +199,12 @@ h1 {
 .btn-primary:hover { background: #6b5de8; transform: translateY(-2px); box-shadow: 0 8px 32px rgba(124,109,250,0.45); }
 .btn-ghost { background: transparent; color: var(--muted2); border: 1px solid var(--border); }
 .btn-ghost:hover { border-color: rgba(255,255,255,0.2); color: var(--text); background: rgba(255,255,255,0.03); transform: translateY(-2px); }
+.btn-secondary {
+  background: #1e1e3a; color: #e2e2ee;
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 0 12px rgba(124,109,250,0.1);
+}
+.btn-secondary:hover { background: #2a2a4a; transform: translateY(-2px); box-shadow: 0 4px 20px rgba(124,109,250,0.2); border-color: rgba(124,109,250,0.3); }
 
 /* PAGE HEADER (subpages) */
 .page {
