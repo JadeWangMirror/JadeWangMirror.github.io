@@ -284,9 +284,10 @@ h1 {
   display: grid; grid-template-columns: 240px 1fr; gap: 3.5rem; align-items: start;
   opacity: 0; animation: fadeUp 0.8s cubic-bezier(0.2,0.8,0.2,1) 0.3s forwards;
 }
+.about-grid > .about-text { min-width: 0; }
 @media (max-width: 680px) { .about-grid { grid-template-columns: 1fr; gap: 2rem; } }
 
-.avatar-wrap { position: sticky; top: 6rem; }
+.avatar-wrap { position: sticky; top: 6rem; align-self: start; }
 .avatar {
   width: 100%; aspect-ratio: 1;
   border-radius: 14px; object-fit: cover;
@@ -303,11 +304,31 @@ h1 {
 
 .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.25rem; }
 .tag {
-  font-size: 0.75rem; font-weight: 500; padding: 0.3rem 0.8rem;
-  border-radius: 5px; border: 1px solid var(--border); color: var(--muted);
-  transition: border-color 0.2s, color 0.2s; letter-spacing: 0.02em;
+  font-size: 0.78rem; font-weight: 500; padding: 0.35rem 0.85rem;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #c5c8d8;
+  transition: all 0.2s; letter-spacing: 0.02em;
 }
-.tag:hover { border-color: rgba(124,109,250,0.3); color: var(--muted2); }
+.tag:hover {
+  background: rgba(124,109,250,0.1);
+  border-color: rgba(124,109,250,0.3);
+  color: var(--text);
+}
+
+/* Featured tags — gradient background for headline directions */
+.tag.featured {
+  background: linear-gradient(135deg, rgba(124,109,250,0.25), rgba(34,211,238,0.18));
+  border: 1px solid rgba(124,109,250,0.5);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 0 14px rgba(124,109,250,0.18);
+}
+.tag.featured:hover {
+  background: linear-gradient(135deg, rgba(124,109,250,0.4), rgba(34,211,238,0.3));
+  box-shadow: 0 0 20px rgba(124,109,250,0.35);
+}
 
 .facts {
   display: grid; grid-template-columns: 1fr 1fr; gap: 1px;

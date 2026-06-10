@@ -62,9 +62,146 @@
     letter-spacing: 0.005em;
   }
   .about-text strong {
+    font-family: inherit;
     font-weight: 700;
     color: var(--accent2);
     font-style: italic;
+  }
+  .inline-emblem {
+    height: 1.05em;
+    width: auto;
+    vertical-align: -0.15em;
+    margin-right: 0.35em;
+    margin-left: 0.1em;
+  }
+  /* Selected highlights list with metallic award tags */
+  .highlights {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 1rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.18rem;
+    color: #d4d4e4;
+    line-height: 1.6;
+  }
+  .highlights li {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: nowrap;
+    gap: 0.7rem;
+    padding: 0.4rem 0;
+  }
+  .highlights li > .hl-tag { flex-shrink: 0; }
+  .highlights a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(124,109,250,0.4);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .highlights a:hover { color: var(--accent2); border-color: var(--accent2); }
+
+  .hl-tag {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    padding: 0;
+  }
+  .hl-gold   { color: #f0c040; text-shadow: 0 0 12px rgba(240,192,64,0.35); }
+  .hl-silver { color: #d2d8e0; text-shadow: 0 0 10px rgba(210,216,224,0.25); }
+  .hl-bronze { color: #d68a4a; text-shadow: 0 0 10px rgba(214,138,74,0.25); }
+  .hl-purple { color: #b8a9ff; text-shadow: 0 0 10px rgba(184,169,255,0.25); }
+
+  /* Collapsible "more honors" */
+  .more-honors {
+    margin-top: 0.6rem;
+  }
+  .more-honors summary {
+    cursor: pointer;
+    list-style: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0.4rem 0;
+    transition: color 0.2s;
+    user-select: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .more-honors summary::-webkit-details-marker { display: none; }
+  .more-honors .chev {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 1px;
+    color: var(--accent);
+    line-height: 0.7;
+    transform: rotate(0deg);
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .more-honors .chev span {
+    display: block;
+    font-size: 0.75rem;
+    line-height: 0.7;
+    opacity: 0.55;
+  }
+  .more-honors .chev span:nth-child(2) { opacity: 0.8; }
+  .more-honors .chev span:nth-child(3) { opacity: 1; }
+  .more-honors[open] .chev { transform: rotate(180deg); }
+  .more-honors summary:hover { color: var(--text); }
+  .more-honors[open] summary { margin-bottom: 0.3rem; }
+  .more-honors summary .label-show { display: inline; }
+  .more-honors summary .label-hide { display: none; }
+  .more-honors[open] summary .label-show { display: none; }
+  .more-honors[open] summary .label-hide { display: inline; }
+
+  /* Animate the unfolding list */
+  .more-honors .more-body {
+    overflow: hidden;
+    height: 0;
+    opacity: 0;
+    transition: height 0.55s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s ease;
+    will-change: height, opacity;
+  }
+  .more-honors .highlights { margin-top: 0; }
+  .about-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 1rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.18rem;
+    color: #d4d4e4;
+    line-height: 1.6;
+  }
+  .about-list li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .about-list li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0.7em;
+    width: 10px; height: 1px;
+    background: var(--accent);
+  }
+  .about-list a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(124,109,250,0.4);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .about-list a:hover {
+    color: var(--accent2);
+    border-color: var(--accent2);
   }
 
   /* ===== HORIZONTAL SCROLL LAYOUT ===== */
@@ -132,8 +269,9 @@
 <div class="bg-glow bg-glow-2"></div>
 
 <nav>
-  <a class="nav-logo" href="index.html">JadeWang</a>
+  <div class="nav-logo">JadeWang</div>
   <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
     <li><a href="research.html">Research</a></li>
     <li><a href="blog.html">Blog</a></li>
     <li><a href="papers.html">Papers</a></li>
@@ -172,36 +310,91 @@
           </div>
           <div class="about-text">
             <p>
-              I'm <strong>JadeWang</strong>, an AI developer and researcher focused on
-              spatial intelligence and embodied intelligence.
-              I care about understanding how things work &mdash; not just making them work.
+              I'm Yiwei Wang (JadeWang), a Computer Science undergraduate at
+              <img src="tongji.png" alt="" class="inline-emblem"><strong>Tongji University</strong> (since 2023),
+              currently working on embodied AI and spatial intelligence.
             </p>
             <p>
-              When I'm not building, I'm reading papers, running experiments, and writing about what I find.
-              Currently exploring the boundary between research and engineering:
-              how ideas from papers actually become things that run.
+              I'm a research intern at <strong>HKUST(GZ) HC Lab</strong>, where I'm contributing
+              to a survey on world models. I also work across Tongji's <strong>VILL</strong>,
+              <strong>TIEV</strong>, and <strong>TOPS</strong> labs
+              on generative motion, geometry-aware world models, and autonomous-driving scenario
+              synthesis.
             </p>
 
             <h3>What I work on</h3>
-            <p>
-              Spatial perception, embodied agents, and the systems that bring them together.
-              I enjoy projects where the right answer isn't obvious yet.
-            </p>
-
-            <h3>Tools I use</h3>
             <div class="tags">
-              <span class="tag">Python</span>
-              <span class="tag">PyTorch</span>
-              <span class="tag">TypeScript</span>
-              <span class="tag">JAX</span>
-              <span class="tag">CUDA</span>
-              <span class="tag">Linux</span>
+              <span class="tag featured">World Model</span>
+              <span class="tag featured">VLA</span>
+              <span class="tag">Autonomous Driving</span>
+              <span class="tag">Video Generation</span>
+              <span class="tag">AI Agent</span>
+              <span class="tag">AI4Science</span>
+              <span class="tag">Embodied AI</span>
+              <span class="tag">Spatial Intelligence</span>
             </div>
 
-            <div class="facts">
-              <div class="fact"><div class="fact-num">2+</div><div class="fact-label">Years building AI</div></div>
-              <div class="fact"><div class="fact-num">∞</div><div class="fact-label">Papers bookmarked</div></div>
-            </div>
+            <h3>Selected highlights</h3>
+            <ul class="highlights">
+              <li>
+                <span class="hl-tag hl-gold">VEXU THINK Award</span>
+                2025 VEX Robotics World Championship
+              </li>
+              <li>
+                <span class="hl-tag hl-gold">First Prize</span>
+                2024 Asia and Pacific Mathematical Contest in Modeling (APMCM)
+              </li>
+              <li>
+                <span class="hl-tag hl-gold">First Prize</span>
+                15th MODEL APEC Conference, East China Regional Meeting
+              </li>
+            </ul>
+            <details class="more-honors">
+              <summary>
+                <span class="label-show">Show more honors</span>
+                <span class="label-hide">Hide</span>
+              </summary>
+              <div class="more-body">
+                <ul class="highlights">
+                <li>
+                  <span class="hl-tag hl-silver">National Second Prize</span>
+                  2025 China Undergraduate Mathematical Modeling Competition (CUMCM)
+                </li>
+                <li>
+                  <span class="hl-tag hl-silver">Second Prize</span>
+                  2024–2025 VEX Robotics China Selection (VURC)
+                </li>
+                <li>
+                  <span class="hl-tag hl-silver">Second Prize</span>
+                  8th China College Intelligent Robot Creative Competition (VEXU)
+                </li>
+                <li>
+                  <span class="hl-tag hl-silver">Silver Award</span>
+                  China International College Students' Innovation Competition 2025 (Tongji)
+                </li>
+                <li>
+                  <span class="hl-tag hl-bronze">Third Prize</span>
+                  2024–2025 VEX Robotics Asia Open Championship Finals (VEXU)
+                </li>
+                <li>
+                  <span class="hl-tag hl-bronze">Third Prize</span>
+                  2025 China–US Young Maker Competition (Tongji Selection)
+                </li>
+                <li>
+                  <span class="hl-tag hl-purple">Outstanding Scholarship</span>
+                  Tongji University, 2024–2025 (Second Class)
+                </li>
+                <li>
+                  <span class="hl-tag hl-purple">Outstanding Student Leader</span>
+                  Tongji University, 2024–2025
+                </li>
+                <li>
+                  <span class="hl-tag hl-purple">Social Activity Scholarship</span>
+                  Tongji University, 2023–2024
+                </li>
+              </ul>
+              </div>
+            </details>
           </div>
         </div>
       </main>
@@ -278,6 +471,51 @@
       if (dx < 0) go(current + 1); else go(current - 1);
     }
   }, { passive: true });
+})();
+
+/* === Smooth <details> expand/collapse === */
+(function () {
+  document.querySelectorAll('details.more-honors').forEach(d => {
+    const body = d.querySelector('.more-body');
+    if (!body) return;
+    const summary = d.querySelector('summary');
+
+    summary.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (d.open) {
+        // collapse
+        body.style.height = body.scrollHeight + 'px';
+        // force reflow then transition to 0
+        body.offsetHeight; // eslint-disable-line
+        requestAnimationFrame(() => {
+          body.style.height = '0px';
+          body.style.opacity = '0';
+        });
+        body.addEventListener('transitionend', function te(ev) {
+          if (ev.propertyName !== 'height') return;
+          body.removeEventListener('transitionend', te);
+          d.open = false;
+          body.style.height = '';
+          body.style.opacity = '';
+        });
+      } else {
+        // expand
+        d.open = true;
+        const target = body.scrollHeight;
+        body.style.height = '0px';
+        body.style.opacity = '0';
+        requestAnimationFrame(() => {
+          body.style.height = target + 'px';
+          body.style.opacity = '1';
+        });
+        body.addEventListener('transitionend', function te(ev) {
+          if (ev.propertyName !== 'height') return;
+          body.removeEventListener('transitionend', te);
+          body.style.height = 'auto';
+        });
+      }
+    });
+  });
 })();
 </script>
 </body>
