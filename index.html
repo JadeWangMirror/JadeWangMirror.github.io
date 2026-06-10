@@ -266,6 +266,84 @@
     .hero-desc { white-space: normal; font-size: 0.82rem; }
     h1 { white-space: normal; }
   }
+
+  /* ===== TERMINAL TYPING ANIMATION ===== */
+  .terminal {
+    position: absolute;
+    bottom: 3rem;
+    left: 0; right: 0;
+    max-width: 100%;
+    padding: 0 3rem;
+    pointer-events: none;
+    z-index: 3;
+    opacity: 0;
+    animation: fadeUp 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) 1s forwards;
+  }
+  .terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 0.7rem 1rem;
+    background: #1a1c2a;
+    border-radius: 10px 10px 0 0;
+    border: 1px solid var(--border);
+    border-bottom: none;
+  }
+  .terminal-dot {
+    width: 11px; height: 11px;
+    border-radius: 50%;
+  }
+  .terminal-dot.red    { background: #ff5f57; }
+  .terminal-dot.yellow { background: #febc2e; }
+  .terminal-dot.green  { background: #28c840; }
+  .terminal-title {
+    margin-left: 0.7rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+  .terminal-body {
+    padding: 1.1rem 1.2rem;
+    background: #0d0e17;
+    border-radius: 0 0 10px 10px;
+    border: 1px solid var(--border);
+    border-top: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.05rem;
+    color: #a8ffb0;
+    line-height: 1.6;
+    min-height: 3.2rem;
+    display: flex;
+    align-items: center;
+  }
+  .terminal-prompt {
+    color: var(--accent);
+    margin-right: 0.6rem;
+    font-weight: 700;
+  }
+  .terminal-text {
+    color: #e8e8f0;
+  }
+  .terminal-cursor {
+    display: inline-block;
+    color: #a8ffb0;
+    font-weight: 300;
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0; }
+  }
+
+  @media (max-width: 600px) {
+    .terminal { padding: 0 1.5rem; bottom: 2rem; }
+    .terminal-body { font-size: 0.78rem; }
+  }
+  @media (max-width: 375px) {
+    .terminal { bottom: 1.5rem; padding: 0 1.2rem; }
+    .terminal-body { font-size: 0.72rem; }
+  }
 </style>
 </head>
 <body>
@@ -301,6 +379,21 @@
           <div class="hero-actions">
             <a href="research.html" class="btn btn-primary">Projects</a>
             <a href="https://github.com/JadeWangMirror" class="btn btn-ghost" target="_blank">GitHub ↗</a>
+          </div>
+        </div>
+
+        <!-- Terminal typing animation -->
+        <div class="terminal">
+          <div class="terminal-bar">
+            <span class="terminal-dot red"></span>
+            <span class="terminal-dot yellow"></span>
+            <span class="terminal-dot green"></span>
+            <span class="terminal-title">jadewang@dev ~</span>
+          </div>
+          <div class="terminal-body">
+            <span class="terminal-prompt">$</span>
+            <span class="terminal-text" id="termText"></span>
+            <span class="terminal-cursor">|</span>
           </div>
         </div>
       </div>
@@ -526,6 +619,57 @@
       }
     });
   });
+})();
+
+/* === Terminal typing loop === */
+(function termTyper() {
+  const el = document.getElementById('termText');
+  if (!el) return;
+
+  const lines = [
+    'echo "Hello, World!"',
+    'python train.py --model world_model',
+    'git push origin main',
+    'conda activate embodied',
+    'nvidia-smi',
+    'ros2 launch robot_arm.launch.py',
+  ];
+
+  let lineIdx = 0;
+  let charIdx = 0;
+  let deleting = false;
+  let pauseTimer = null;
+
+  const TYPING_SPEED = 75;
+  const DELETE_SPEED = 40;
+  const PAUSE_AFTER_TYPE = 2000;
+  const PAUSE_AFTER_DELETE = 500;
+
+  function tick() {
+    const line = lines[lineIdx];
+
+    if (!deleting) {
+      charIdx++;
+      el.textContent = line.substring(0, charIdx);
+      if (charIdx >= line.length) {
+        pauseTimer = setTimeout(() => { deleting = true; tick(); }, PAUSE_AFTER_TYPE);
+        return;
+      }
+      setTimeout(tick, TYPING_SPEED + Math.random() * 40);
+    } else {
+      charIdx--;
+      el.textContent = line.substring(0, charIdx);
+      if (charIdx <= 0) {
+        deleting = false;
+        lineIdx = (lineIdx + 1) % lines.length;
+        pauseTimer = setTimeout(tick, PAUSE_AFTER_DELETE);
+        return;
+      }
+      setTimeout(tick, DELETE_SPEED);
+    }
+  }
+
+  setTimeout(tick, 1500);
 })();
 </script>
 </body>
