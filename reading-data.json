@@ -1,65 +1,42 @@
 [
   {
-    "title": "Attention Is All You Need",
-    "authors": "Vaswani et al.",
-    "year": 2017,
-    "url": "https://arxiv.org/abs/1706.03762",
-    "tags": ["Foundation Model"]
+    "title": "LARA: Latent Action Representation Alignment for Vision-Language-Action Models",
+    "authors": "Liu et al.",
+    "year": 2026,
+    "month": 6,
+    "url": "https://arxiv.org/abs/2606.07100v1",
+    "category": "VLA"
   },
   {
-    "title": "3D Gaussian Splatting for Real-Time Radiance Field Rendering",
-    "authors": "Kerbl et al.",
-    "year": 2023,
-    "url": "https://arxiv.org/abs/2303.12712",
-    "tags": ["3D Representation"]
+    "title": "VLA-JEPA: Enhancing Vision-Language-Action Model with Latent World Model",
+    "authors": "Sun et al.",
+    "year": 2026,
+    "month": 2,
+    "url": "https://arxiv.org/abs/2602.10098v2",
+    "category": ["VLA","World Model","JEPA","WAM"]
   },
   {
-    "title": "World Models",
-    "authors": "Ha & Schmidhuber",
-    "year": 2018,
-    "url": "https://arxiv.org/abs/1803.10122",
-    "tags": ["World Model"]
+    "title": "WLA: World-Language-Action Model for Unified World Modeling, Language Reasoning, and Action Synthesis",
+    "authors": "Yang et al.",
+    "year": 2026,
+    "month": 6,
+    "url": "https://arxiv.org/abs/2606.05979v1",
+    "category": ["World Model","WAM"]
   },
   {
-    "title": "Genie 2: A Large-Scale Foundation World Model",
-    "authors": "DeepMind",
-    "year": 2024,
-    "url": "https://arxiv.org/abs/2501.18142",
-    "tags": ["World Model"]
+    "title": "Visuo-Tactile World Models",
+    "authors": "Higuera et al.",
+    "year": 2026,
+    "month": 2,
+    "url": "https://arxiv.org/abs/2602.06001",
+    "category": "World Model"
   },
   {
-    "title": "VILA: On Pre-training for Visual Language Models",
-    "authors": "Lin et al.",
-    "year": 2024,
-    "url": "https://arxiv.org/abs/2312.07533",
-    "tags": ["VLA"]
-  },
-  {
-    "title": "RT-2: Vision-Language-Action Models Transfer Web Knowledge to Robotic Control",
-    "authors": "Brohan et al.",
-    "year": 2023,
-    "url": "https://arxiv.org/abs/2307.15818",
-    "tags": ["VLA"]
-  },
-  {
-    "title": "Driving with LLMs: Fusing Object-Level Vector Modality for Explainable Autonomous Driving",
-    "authors": "Chen et al.",
-    "year": 2023,
-    "url": "https://arxiv.org/abs/2310.01957",
-    "tags": ["Autonomous Driving"]
-  },
-  {
-    "title": "Denoising Diffusion Probabilistic Models",
-    "authors": "Ho et al.",
-    "year": 2020,
-    "url": "https://arxiv.org/abs/2006.11239",
-    "tags": ["Video Generation"]
-  },
-  {
-    "title": "Sora: Creating Video from Text",
-    "authors": "OpenAI",
-    "year": 2024,
-    "url": "https://openai.com/index/sora/",
-    "tags": ["Video Generation", "World Model"]
+    "title": "WorldVLA: Towards Autoregressive Action World Model",
+    "authors": "Cen et al.",
+    "year": 2025,
+    "month": 6,
+    "url": "https://arxiv.org/abs/2506.21539v1",
+    "category": ["World Model","VLA","WAM"]
   }
 ]

@@ -14,10 +14,15 @@
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin-bottom: 2rem;
+    margin-bottom: 0.8rem;
     opacity: 0;
     animation: fadeUp 0.8s cubic-bezier(0.2,0.8,0.2,1) 0.2s forwards;
   }
+  .filter-sub {
+    margin-bottom: 0.6rem;
+    display: none;
+  }
+  .filter-sub.visible { display: flex; }
   .filter-btn {
     font-family: 'Inter', sans-serif;
     font-size: 0.75rem;
@@ -154,7 +159,10 @@
     <p class="page-sub">Research that shaped how I think. Updated occasionally.</p>
   </div>
 
-  <div class="filter-bar" id="filterBar"></div>
+  <!-- Filter levels -->
+  <div class="filter-bar" id="filterCat"></div>
+  <div class="filter-bar filter-sub" id="filterYear"></div>
+  <div class="filter-bar filter-sub" id="filterMonth"></div>
   <div class="paper-count" id="paperCount"></div>
   <div class="paper-list" id="paperList"></div>
 </main>
@@ -171,84 +179,130 @@
 <script src="app.js"></script>
 <script>
 (function () {
-  var filterBar = document.getElementById('filterBar');
+  var filterCat = document.getElementById('filterCat');
+  var filterYear = document.getElementById('filterYear');
+  var filterMonth = document.getElementById('filterMonth');
   var paperList = document.getElementById('paperList');
   var paperCount = document.getElementById('paperCount');
-  var activeTag = null;
+
+  var papers = [];
+  var activeCat = null;
+  var activeYear = null;
+  var activeMonth = null;
+
+  var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
   fetch('reading-data.json')
     .then(function (r) { return r.json(); })
-    .then(function (papers) {
-      // Sort by year descending
-      papers.sort(function (a, b) { return b.year - a.year; });
-
-      // Extract unique tags
-      var tagSet = {};
-      papers.forEach(function (p) {
-        p.tags.forEach(function (t) { tagSet[t] = true; });
-      });
-      var tags = Object.keys(tagSet).sort();
-
-      // Render filter buttons
-      var allBtn = document.createElement('button');
-      allBtn.className = 'filter-btn active';
-      allBtn.textContent = 'All';
-      allBtn.addEventListener('click', function () { setFilter(null); });
-      filterBar.appendChild(allBtn);
-
-      tags.forEach(function (tag) {
-        var btn = document.createElement('button');
-        btn.className = 'filter-btn';
-        btn.textContent = tag;
-        btn.addEventListener('click', function () { setFilter(tag); });
-        filterBar.appendChild(btn);
-      });
-
-      // Render papers
-      papers.forEach(function (p) {
-        var a = document.createElement('a');
-        a.className = 'paper-item';
-        a.href = p.url;
-        a.target = '_blank';
-        a.dataset.tags = p.tags.join(',');
-        a.innerHTML =
-          '<div class="paper-year">' + p.year + '</div>' +
-          '<div>' +
-            '<div class="paper-title">' + p.title + '</div>' +
-            '<div class="paper-authors">' + p.authors + '</div>' +
-            '<div class="paper-tags">' + p.tags.map(function (t) { return '<span class="paper-tag">' + t + '</span>'; }).join('') + '</div>' +
-          '</div>' +
-          '<div class="paper-arrow">→</div>';
-        paperList.appendChild(a);
-      });
-
-      updateCount(papers.length);
-
-      function setFilter(tag) {
-        activeTag = tag;
-        // Update buttons
-        filterBar.querySelectorAll('.filter-btn').forEach(function (btn) {
-          var isAll = btn.textContent === 'All';
-          btn.classList.toggle('active', tag === null ? isAll : btn.textContent === tag);
-        });
-        // Filter items
-        var count = 0;
-        paperList.querySelectorAll('.paper-item').forEach(function (item) {
-          var itemTags = item.dataset.tags.split(',');
-          var show = tag === null || itemTags.indexOf(tag) !== -1;
-          item.classList.toggle('hidden', !show);
-          if (show) count++;
-        });
-        updateCount(count);
-      }
-
-      function updateCount(n) {
-        paperCount.textContent = n + ' paper' + (n !== 1 ? 's' : '');
-      }
+    .then(function (data) {
+      papers = data.sort(function (a, b) { return b.year - a.year || b.month - a.month; });
+      buildCatFilter();
+      buildYearFilter();
+      renderPapers();
     })
     .catch(function () {
-      paperList.innerHTML = '<p style="color:var(--muted);padding:2rem 0;">Cannot load reading list. If viewing locally, use a local server or view on <a href="https://jadewangmirror.github.io/reading.html" style="color:var(--accent)">GitHub Pages</a>.</p>';
+      paperList.innerHTML = '<p style="color:var(--muted);padding:2rem 0;">Cannot load reading list. Try <a href="https://jadewangmirror.github.io/reading.html" style="color:var(--accent)">GitHub Pages</a>.</p>';
     });
+
+  function buildCatFilter() {
+    var cats = {};
+    papers.forEach(function (p) {
+      var c = Array.isArray(p.category) ? p.category : [p.category];
+      c.forEach(function (t) { cats[t] = true; });
+    });
+    filterCat.innerHTML = '';
+    addBtn(filterCat, 'All', null, activeCat === null, function () { activeCat = null; activeYear = null; activeMonth = null; buildYearFilter(); buildMonthFilter(); renderPapers(); });
+    Object.keys(cats).sort().forEach(function (cat) {
+      addBtn(filterCat, cat, cat, activeCat === cat, function () { activeCat = cat; activeYear = null; activeMonth = null; buildYearFilter(); buildMonthFilter(); renderPapers(); });
+    });
+  }
+
+  function buildYearFilter() {
+    filterYear.innerHTML = '';
+    filterYear.classList.remove('visible');
+    var years = {};
+    filtered(activeCat, null, null).forEach(function (p) { years[p.year] = true; });
+    var sorted = Object.keys(years).sort(function (a, b) { return b - a; });
+    if (sorted.length <= 1) {
+      activeYear = sorted[0] || null;
+      buildMonthFilter();
+      return;
+    }
+    addBtn(filterYear, 'All years', null, activeYear === null, function () { activeYear = null; activeMonth = null; buildMonthFilter(); renderPapers(); });
+    sorted.forEach(function (y) {
+      addBtn(filterYear, y, y, activeYear == y, function () { activeYear = y; activeMonth = null; buildMonthFilter(); renderPapers(); });
+    });
+    filterYear.classList.add('visible');
+  }
+
+  function buildMonthFilter() {
+    filterMonth.innerHTML = '';
+    filterMonth.classList.remove('visible');
+    var effectiveYear = activeYear;
+    var pool = filtered(activeCat, effectiveYear, null);
+    var months = {};
+    pool.forEach(function (p) { months[p.month] = true; });
+    var sorted = Object.keys(months).sort(function (a, b) { return a - b; });
+    if (sorted.length <= 1) return;
+    addBtn(filterMonth, 'All months', null, activeMonth === null, function () { activeMonth = null; renderPapers(); });
+    sorted.forEach(function (m) {
+      addBtn(filterMonth, MONTHS[m - 1], m, activeMonth == m, function () { activeMonth = m; renderPapers(); });
+    });
+    filterMonth.classList.add('visible');
+  }
+
+  function filtered(cat, year, month) {
+    return papers.filter(function (p) {
+      if (cat) {
+        var c = Array.isArray(p.category) ? p.category : [p.category];
+        if (c.indexOf(cat) === -1) return false;
+      }
+      if (year && p.year != year) return false;
+      if (month && p.month != month) return false;
+      return true;
+    });
+  }
+
+  function renderPapers() {
+    var list = filtered(activeCat, activeYear, activeMonth);
+    paperCount.textContent = list.length + ' paper' + (list.length !== 1 ? 's' : '');
+    paperList.innerHTML = '';
+    list.forEach(function (p) {
+      var a = document.createElement('a');
+      a.className = 'paper-item';
+      a.href = p.url;
+      a.target = '_blank';
+      a.innerHTML =
+        '<div class="paper-year">' + p.year + '.' + (p.month < 10 ? '0' : '') + p.month + '</div>' +
+        '<div>' +
+          '<div class="paper-title">' + p.title + '</div>' +
+          '<div class="paper-authors">' + p.authors + '</div>' +
+          '<div class="paper-tags">' + (Array.isArray(p.category) ? p.category : [p.category]).map(function (t) { return '<span class="paper-tag">' + t + '</span>'; }).join('') + '</div>' +
+        '</div>' +
+        '<div class="paper-arrow">→</div>';
+      paperList.appendChild(a);
+    });
+    // Update button active states
+    updateBtns(filterCat, activeCat);
+    updateBtns(filterYear, activeYear);
+    updateBtns(filterMonth, activeMonth);
+  }
+
+  function addBtn(bar, label, value, isActive, onClick) {
+    var btn = document.createElement('button');
+    btn.className = 'filter-btn' + (isActive ? ' active' : '');
+    btn.textContent = label;
+    btn.dataset.value = value || '';
+    btn.addEventListener('click', onClick);
+    bar.appendChild(btn);
+  }
+
+  function updateBtns(bar, activeValue) {
+    bar.querySelectorAll('.filter-btn').forEach(function (btn) {
+      var v = btn.dataset.value;
+      btn.classList.toggle('active', v === '' ? activeValue === null : v == activeValue);
+    });
+  }
 })();
 </script>
 </body>
