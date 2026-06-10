@@ -95,9 +95,9 @@ nav {
 /* HERO (homepage) */
 .hero {
   min-height: 100vh;
-  display: flex; align-items: center;
-  padding: 7rem 3rem 5rem;
-  max-width: 960px; margin: 0 auto;
+  display: flex; align-items: flex-start;
+  padding: 7rem 0 4rem 4rem;
+  max-width: 100%; margin: 0;
   position: relative; z-index: 1;
 }
 .hero-inner { max-width: 640px; }
@@ -146,10 +146,11 @@ h1 em {
 }
 
 h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(2.6rem, 5.5vw, 4rem);
-  font-weight: 700; line-height: 1.1; letter-spacing: -0.02em;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+  font-weight: 500; line-height: 1.2; letter-spacing: -0.02em;
   margin-bottom: 1.5rem;
+  white-space: nowrap;
 }
 .hero-desc {
   font-size: 1.05rem; font-weight: 300; color: var(--muted2);
