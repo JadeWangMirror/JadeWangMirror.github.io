@@ -1,39 +1,24 @@
 # Hello, World — My First Post
 
-This is a sample blog post to demonstrate the reading experience. You can write in **Markdown** with full formatting support.
+This is JadeWang's blog. I'm Yiwei Wang, a Computer Science undergraduate at Tongji University, currently doing research in embodied AI and spatial intelligence.
 
-## Why I started writing
+I work across several labs — HKUST(GZ) HC Lab, and Tongji's VILL, TIEV, TOPS labs — on topics ranging from world models to autonomous driving scene generation. My day-to-day sits at the intersection of reading papers, writing code, and trying to make ideas actually run.
 
-I've always believed that writing clarifies thinking. When you try to explain something to someone else, you discover the gaps in your own understanding.
+## What this blog is about
 
-![A placeholder image showing the concept of neural networks](https://images.unsplash.com/photo-1677442136019-21780ecad995?w=720&q=80)
+This blog will focus on two directions that I think are among the most important in embodied intelligence right now:
 
-## What this blog will cover
+**World Models** — Can we teach a model to understand how the physical world works? Not just predict the next frame, but capture geometry, dynamics, and causality in a compressed latent space. How do we build models that truly "know" what happens when objects collide, when gravity pulls, when a door opens? I want to share what I'm learning along the way: what works, what breaks, and what the open questions are.
 
-Here's what I plan to write about:
+**VLA (Vision-Language-Action)** — How do we connect perception, reasoning, and motor control into a single coherent system? The VLA paradigm is rapidly evolving, and I find myself constantly re-thinking what the right architecture should look like. I'll write about the design space, the tradeoffs, and the papers that shift my thinking.
 
-- **World Models** — how generative models learn the rules of physics
-- **Embodied Intelligence** — getting AI to interact with the real world
-- **Engineering Notes** — the gap between paper and production
-- **Reading Notes** — insights from papers I find interesting
 
-## A quick code example
+## What to expect
 
-Here's a minimal training loop in PyTorch:
+I'll write when I have something worth saying. Posts will be a mix of:
 
-```python
-for epoch in range(num_epochs):
-    for batch in dataloader:
-        optimizer.zero_grad()
-        loss = model(batch)
-        loss.backward()
-        optimizer.step()
-```
+- Reflections on papers I'm reading
+- Lessons from my own research (including failures)
+- Open questions I haven't figured out yet
 
-## What's next
-
-I'll be posting irregularly — when I have something worth sharing. Quality over quantity.
-
-> "The best time to start writing was yesterday. The second best time is now."
-
-Stay tuned.
+No schedules, no filler. Let's see where this goes.
