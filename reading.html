@@ -238,8 +238,9 @@
   function buildMonthFilter() {
     filterMonth.innerHTML = '';
     filterMonth.classList.remove('visible');
-    var effectiveYear = activeYear;
-    var pool = filtered(activeCat, effectiveYear, null);
+    // Only show months when a specific year is selected
+    if (activeYear === null) return;
+    var pool = filtered(activeCat, activeYear, null);
     var months = {};
     pool.forEach(function (p) { months[p.month] = true; });
     var sorted = Object.keys(months).sort(function (a, b) { return a - b; });
