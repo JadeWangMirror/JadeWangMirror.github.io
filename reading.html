@@ -6,8 +6,127 @@
 <title>Reading List — JadeWang</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<style>
+  /* Tag filter bar */
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s cubic-bezier(0.2,0.8,0.2,1) 0.2s forwards;
+  }
+  .filter-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    padding: 0.4rem 0.85rem;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.04);
+    color: #c5c8d8;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .filter-btn:hover {
+    background: rgba(124,109,250,0.1);
+    border-color: rgba(124,109,250,0.3);
+    color: var(--text);
+  }
+  .filter-btn.active {
+    background: rgba(124,109,250,0.2);
+    border-color: rgba(124,109,250,0.5);
+    color: #fff;
+    box-shadow: 0 0 12px rgba(124,109,250,0.15);
+  }
+
+  /* Paper list */
+  .paper-list {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--border);
+    opacity: 0;
+    animation: fadeUp 0.8s cubic-bezier(0.2,0.8,0.2,1) 0.3s forwards;
+  }
+  .paper-item {
+    display: grid;
+    grid-template-columns: 60px 1fr auto;
+    gap: 1.5rem;
+    align-items: baseline;
+    padding: 1.3rem 0;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    color: inherit;
+    transition: padding 0.2s, color 0.2s;
+  }
+  .paper-item:hover { padding-left: 0.8rem; }
+  .paper-item:hover .paper-title { color: var(--accent); }
+  .paper-item:hover .paper-arrow { opacity: 1; transform: translateX(0); }
+  .paper-item.hidden { display: none; }
+
+  .paper-year {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    font-variant-numeric: tabular-nums;
+  }
+  .paper-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    transition: color 0.2s;
+    line-height: 1.4;
+  }
+  .paper-authors {
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-top: 0.25rem;
+  }
+  .paper-tags {
+    display: flex;
+    gap: 0.4rem;
+    margin-top: 0.4rem;
+    flex-wrap: wrap;
+  }
+  .paper-tag {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.45rem;
+    border-radius: 3px;
+    background: rgba(124,109,250,0.1);
+    color: var(--accent);
+    border: 1px solid rgba(124,109,250,0.15);
+  }
+  .paper-arrow {
+    font-size: 0.9rem;
+    color: var(--accent);
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: opacity 0.25s, transform 0.25s;
+  }
+
+  .paper-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-bottom: 1rem;
+    letter-spacing: 0.03em;
+  }
+
+  @media (max-width: 600px) {
+    .paper-item { grid-template-columns: 1fr; gap: 0.3rem; padding: 1rem 0; }
+    .paper-item:hover { padding-left: 0; }
+    .paper-arrow { display: none; }
+    .paper-year { display: inline; margin-right: 0.5rem; }
+  }
+</style>
 </head>
 <body>
 <div id="progress-bar"></div>
@@ -35,48 +154,9 @@
     <p class="page-sub">Research that shaped how I think. Updated occasionally.</p>
   </div>
 
-  <div class="article-list">
-    <a href="https://arxiv.org/abs/1706.03762" target="_blank" class="article">
-      <div class="article-date">2017</div>
-      <div>
-        <div class="article-title">Attention Is All You Need</div>
-        <div class="article-desc">Vaswani et al. — The transformer paper. Still worth re-reading carefully.</div>
-      </div>
-      <div class="article-arrow">→</div>
-    </a>
-    <a href="https://arxiv.org/abs/2305.16291" target="_blank" class="article">
-      <div class="article-date">2023</div>
-      <div>
-        <div class="article-title">Drag Your GAN</div>
-        <div class="article-desc">Pan et al. — Interactive point-based manipulation on the generative image manifold.</div>
-      </div>
-      <div class="article-arrow">→</div>
-    </a>
-    <a href="https://arxiv.org/abs/2312.17661" target="_blank" class="article">
-      <div class="article-date">2024</div>
-      <div>
-        <div class="article-title">World Models for Autonomous Driving</div>
-        <div class="article-desc">Survey — How world models learn physics, predict futures, and drive decisions.</div>
-      </div>
-      <div class="article-arrow">→</div>
-    </a>
-    <a href="https://arxiv.org/abs/2303.12712" target="_blank" class="article">
-      <div class="article-date">2023</div>
-      <div>
-        <div class="article-title">3D Gaussian Splatting for Real-Time Radiance Field Rendering</div>
-        <div class="article-desc">Kerbl et al. — Real-time novel view synthesis with explicit 3D Gaussians.</div>
-      </div>
-      <div class="article-arrow">→</div>
-    </a>
-    <a href="https://arxiv.org/abs/2403.12945" target="_blank" class="article">
-      <div class="article-date">2024</div>
-      <div>
-        <div class="article-title">VILA: On Pre-training for Visual Language Models</div>
-        <div class="article-desc">Lin et al. — Scaling visual-language pre-training for embodied reasoning.</div>
-      </div>
-      <div class="article-arrow">→</div>
-    </a>
-  </div>
+  <div class="filter-bar" id="filterBar"></div>
+  <div class="paper-count" id="paperCount"></div>
+  <div class="paper-list" id="paperList"></div>
 </main>
 
 <footer>
@@ -89,5 +169,87 @@
 </footer>
 
 <script src="app.js"></script>
+<script>
+(function () {
+  var filterBar = document.getElementById('filterBar');
+  var paperList = document.getElementById('paperList');
+  var paperCount = document.getElementById('paperCount');
+  var activeTag = null;
+
+  fetch('reading-data.json')
+    .then(function (r) { return r.json(); })
+    .then(function (papers) {
+      // Sort by year descending
+      papers.sort(function (a, b) { return b.year - a.year; });
+
+      // Extract unique tags
+      var tagSet = {};
+      papers.forEach(function (p) {
+        p.tags.forEach(function (t) { tagSet[t] = true; });
+      });
+      var tags = Object.keys(tagSet).sort();
+
+      // Render filter buttons
+      var allBtn = document.createElement('button');
+      allBtn.className = 'filter-btn active';
+      allBtn.textContent = 'All';
+      allBtn.addEventListener('click', function () { setFilter(null); });
+      filterBar.appendChild(allBtn);
+
+      tags.forEach(function (tag) {
+        var btn = document.createElement('button');
+        btn.className = 'filter-btn';
+        btn.textContent = tag;
+        btn.addEventListener('click', function () { setFilter(tag); });
+        filterBar.appendChild(btn);
+      });
+
+      // Render papers
+      papers.forEach(function (p) {
+        var a = document.createElement('a');
+        a.className = 'paper-item';
+        a.href = p.url;
+        a.target = '_blank';
+        a.dataset.tags = p.tags.join(',');
+        a.innerHTML =
+          '<div class="paper-year">' + p.year + '</div>' +
+          '<div>' +
+            '<div class="paper-title">' + p.title + '</div>' +
+            '<div class="paper-authors">' + p.authors + '</div>' +
+            '<div class="paper-tags">' + p.tags.map(function (t) { return '<span class="paper-tag">' + t + '</span>'; }).join('') + '</div>' +
+          '</div>' +
+          '<div class="paper-arrow">→</div>';
+        paperList.appendChild(a);
+      });
+
+      updateCount(papers.length);
+
+      function setFilter(tag) {
+        activeTag = tag;
+        // Update buttons
+        filterBar.querySelectorAll('.filter-btn').forEach(function (btn) {
+          var isAll = btn.textContent === 'All';
+          btn.classList.toggle('active', tag === null ? isAll : btn.textContent === tag);
+        });
+        // Filter items
+        var count = 0;
+        paperList.querySelectorAll('.paper-item').forEach(function (item) {
+          var itemTags = item.dataset.tags.split(',');
+          var show = tag === null || itemTags.indexOf(tag) !== -1;
+          item.classList.toggle('hidden', !show);
+          if (show) count++;
+        });
+        updateCount(count);
+      }
+
+      function updateCount(n) {
+        paperCount.textContent = n + ' paper' + (n !== 1 ? 's' : '');
+      }
+    })
+    .catch(function () {
+      paperList.innerHTML = '<p style="color:var(--muted);padding:2rem 0;">Cannot load reading list. If viewing locally, use a local server or view on <a href="https://jadewangmirror.github.io/reading.html" style="color:var(--accent)">GitHub Pages</a>.</p>';
+    });
+})();
+</script>
 </body>
 </html>
