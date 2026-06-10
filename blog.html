@@ -6,8 +6,259 @@
 <title>Blog — JadeWang</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<style>
+  /* Blog card styles */
+  .blog-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s cubic-bezier(0.2,0.8,0.2,1) 0.3s forwards;
+  }
+
+  .blog-card {
+    position: relative;
+    display: block;
+    padding: 2rem 2.2rem;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+                box-shadow 0.3s ease,
+                border-color 0.3s ease,
+                background 0.3s ease;
+    overflow: hidden;
+  }
+  .blog-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(124,109,250,0.06), rgba(34,211,238,0.04));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  .blog-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(124,109,250,0.3);
+    box-shadow: 0 12px 40px rgba(124,109,250,0.1), 0 2px 12px rgba(0,0,0,0.3);
+    background: rgba(255,255,255,0.03);
+  }
+  .blog-card:hover::before { opacity: 1; }
+  .blog-card:hover .blog-card-title { color: var(--accent); }
+  .blog-card:hover .blog-card-arrow { opacity: 1; transform: translateX(0); }
+
+  .blog-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.85rem;
+  }
+  .blog-card-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .blog-card-tag {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.55rem;
+    border-radius: 4px;
+    background: rgba(124,109,250,0.12);
+    color: var(--accent);
+    border: 1px solid rgba(124,109,250,0.2);
+  }
+
+  .blog-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1.35;
+    margin-bottom: 0.65rem;
+    transition: color 0.2s;
+    position: relative;
+  }
+
+  .blog-card-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--muted2);
+  }
+
+  .blog-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 1.2rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255,255,255,0.04);
+  }
+  .blog-card-arrow {
+    color: var(--accent);
+    font-size: 1.1rem;
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: opacity 0.25s, transform 0.25s;
+  }
+
+  /* ===== BLOG READER PANEL ===== */
+  .blog-reader {
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    background: var(--bg);
+    overflow-y: auto;
+    padding: 0;
+    transform: translateY(100%);
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .blog-reader.open {
+    transform: translateY(0);
+  }
+  .blog-reader-inner {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 6rem 2.5rem 5rem;
+  }
+  .blog-reader-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    cursor: pointer;
+    margin-bottom: 2.5rem;
+    padding: 0.4rem 0;
+    transition: color 0.2s;
+    text-decoration: none;
+    letter-spacing: 0.03em;
+  }
+  .blog-reader-back:hover { color: var(--text); }
+
+  .blog-reader-header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .blog-reader-header .blog-card-meta { margin-bottom: 1rem; }
+  .blog-reader-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.3;
+    white-space: normal;
+  }
+
+  /* Article body typography */
+  .blog-reader-body h1,
+  .blog-reader-body h2,
+  .blog-reader-body h3 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  .blog-reader-body h1 { font-size: 1.6rem; }
+  .blog-reader-body h2 { font-size: 1.3rem; }
+  .blog-reader-body h3 { font-size: 1.1rem; }
+  .blog-reader-body p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+    line-height: 1.8;
+    color: #d4d4e4;
+    margin-bottom: 1.3rem;
+  }
+  .blog-reader-body strong { font-weight: 600; color: var(--text); }
+  .blog-reader-body em { font-style: italic; }
+  .blog-reader-body a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(124,109,250,0.4);
+  }
+  .blog-reader-body a:hover { color: var(--accent2); }
+  .blog-reader-body img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin: 1.8rem 0;
+    border: 1px solid var(--border);
+  }
+  .blog-reader-body ul, .blog-reader-body ol {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #d4d4e4;
+    padding-left: 1.5rem;
+    margin-bottom: 1.3rem;
+  }
+  .blog-reader-body li { margin-bottom: 0.4rem; }
+  .blog-reader-body blockquote {
+    border-left: 3px solid var(--accent);
+    padding: 0.8rem 1.2rem;
+    margin: 1.5rem 0;
+    background: rgba(124,109,250,0.05);
+    border-radius: 0 8px 8px 0;
+  }
+  .blog-reader-body blockquote p {
+    font-style: italic;
+    color: var(--muted2);
+    margin-bottom: 0;
+  }
+  .blog-reader-body code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85em;
+    background: rgba(255,255,255,0.06);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    color: #e8c4ff;
+  }
+  .blog-reader-body pre {
+    background: #0d0e17;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem 1.4rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+  .blog-reader-body pre code {
+    background: none;
+    padding: 0;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: #a8ffb0;
+  }
+  .blog-reader-body hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2.5rem 0;
+  }
+
+  @media (max-width: 600px) {
+    .blog-card { padding: 1.5rem 1.3rem; }
+    .blog-card-title { font-size: 1.1rem; }
+    .blog-card-desc { font-size: 1rem; }
+    .blog-reader-inner { padding: 5rem 1.5rem 3rem; }
+    .blog-reader-header h1 { font-size: 1.5rem; }
+    .blog-reader-body p,
+    .blog-reader-body ul,
+    .blog-reader-body ol { font-size: 1.05rem; }
+  }
+</style>
 </head>
 <body>
 <div id="progress-bar"></div>
@@ -22,47 +273,50 @@
   </div>
   <ul class="nav-links" id="navLinks">
     <li><a href="index.html">Home</a></li>
-    <li><a href="research.html">Research</a></li>
     <li><a href="blog.html" class="active">Blog</a></li>
-    <li><a href="papers.html">Papers</a></li>
+    <li><a href="reading.html">Reading List</a></li>
   </ul>
   <div class="nav-overlay" id="navOverlay"></div>
 </nav>
 
-<main class="page">
+<main class="page" id="blogList">
   <div class="page-header">
     <div class="page-eyebrow">Blog</div>
     <h1 class="page-title">Writing</h1>
-    <p class="page-sub">Notes from research and engineering — what I learned and why it mattered.</p>
+    <p class="page-sub">Thoughts on spatial intelligence, embodied AI, and building things that think.</p>
   </div>
 
-  <div class="article-list">
-    <a href="#" class="article">
-      <div class="article-date">2026 · 06 · 10</div>
-      <div>
-        <div class="article-title">Post title here</div>
-        <div class="article-desc">A one-line summary of what this post covers.</div>
+  <div class="blog-grid">
+
+    <div class="blog-card" data-post="hello-world.md" data-title="Hello, World — My First Post" data-date="2026 · 06 · 10" data-tag="Introduction">
+      <div class="blog-card-meta">
+        <span class="blog-card-date">2026 · 06 · 10</span>
+        <span class="blog-card-tag">Introduction</span>
       </div>
-      <div class="article-arrow">→</div>
-    </a>
-    <a href="#" class="article">
-      <div class="article-date">2026 · 05 · 22</div>
-      <div>
-        <div class="article-title">Another post</div>
-        <div class="article-desc">What was the key insight, in plain English.</div>
+      <div class="blog-card-title">Hello, World — My First Post</div>
+      <div class="blog-card-desc">Why I started writing, what this blog will cover, and a look at the tools I use.</div>
+      <div class="blog-card-footer">
+        <span class="blog-card-arrow">→</span>
       </div>
-      <div class="article-arrow">→</div>
-    </a>
-    <a href="#" class="article">
-      <div class="article-date">2026 · 04 · 03</div>
-      <div>
-        <div class="article-title">More writing</div>
-        <div class="article-desc">Keep collecting thoughts here as you go.</div>
-      </div>
-      <div class="article-arrow">→</div>
-    </a>
+    </div>
+
   </div>
 </main>
+
+<!-- Reader panel -->
+<div class="blog-reader" id="blogReader">
+  <div class="blog-reader-inner">
+    <a class="blog-reader-back" id="readerBack">← Back to posts</a>
+    <div class="blog-reader-header">
+      <div class="blog-card-meta">
+        <span class="blog-card-date" id="readerDate"></span>
+        <span class="blog-card-tag" id="readerTag"></span>
+      </div>
+      <h1 id="readerTitle"></h1>
+    </div>
+    <div class="blog-reader-body" id="readerBody"></div>
+  </div>
+</div>
 
 <footer>
   <p>© 2026 JadeWang</p>
@@ -74,5 +328,166 @@
 </footer>
 
 <script src="app.js"></script>
+<script>
+(function () {
+  // Simple Markdown → HTML parser
+  function md(src) {
+    var html = '';
+    var lines = src.split('\n');
+    var inCode = false, codeBlock = '';
+    var inList = false, listType = '';
+
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i];
+
+      // Code blocks
+      if (line.trim().startsWith('```')) {
+        if (inCode) {
+          html += '<pre><code>' + escHtml(codeBlock) + '</code></pre>';
+          codeBlock = '';
+          inCode = false;
+        } else {
+          if (inList) { html += '</' + listType + '>'; inList = false; }
+          inCode = true;
+        }
+        continue;
+      }
+      if (inCode) { codeBlock += line + '\n'; continue; }
+
+      // Close list if line doesn't continue it
+      if (inList && !/^(\s*[-*]\s|^\s*\d+\.\s)/.test(line) && line.trim() !== '') {
+        html += '</' + listType + '>';
+        inList = false;
+      }
+
+      // Empty line
+      if (line.trim() === '') {
+        if (inList) { /* stay in list */ }
+        continue;
+      }
+
+      // Headings
+      if (/^### /.test(line)) { html += '<h3>' + inline(line.slice(4)) + '</h3>'; continue; }
+      if (/^## /.test(line)) { html += '<h2>' + inline(line.slice(3)) + '</h2>'; continue; }
+      if (/^# /.test(line)) { html += '<h1>' + inline(line.slice(2)) + '</h1>'; continue; }
+
+      // Horizontal rule
+      if (/^---$/.test(line.trim())) { html += '<hr>'; continue; }
+
+      // Blockquote
+      if (/^> /.test(line)) {
+        html += '<blockquote><p>' + inline(line.slice(2)) + '</p></blockquote>';
+        continue;
+      }
+
+      // Image (standalone line)
+      var imgMatch = line.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
+      if (imgMatch) {
+        html += '<img src="' + imgMatch[2] + '" alt="' + escHtml(imgMatch[1]) + '">';
+        continue;
+      }
+
+      // Unordered list
+      if (/^\s*[-*]\s/.test(line)) {
+        if (!inList || listType !== 'ul') {
+          if (inList) html += '</' + listType + '>';
+          html += '<ul>'; inList = true; listType = 'ul';
+        }
+        html += '<li>' + inline(line.replace(/^\s*[-*]\s/, '')) + '</li>';
+        continue;
+      }
+
+      // Ordered list
+      if (/^\s*\d+\.\s/.test(line)) {
+        if (!inList || listType !== 'ol') {
+          if (inList) html += '</' + listType + '>';
+          html += '<ol>'; inList = true; listType = 'ol';
+        }
+        html += '<li>' + inline(line.replace(/^\s*\d+\.\s/, '')) + '</li>';
+        continue;
+      }
+
+      // Paragraph
+      html += '<p>' + inline(line) + '</p>';
+    }
+
+    if (inCode) html += '<pre><code>' + escHtml(codeBlock) + '</code></pre>';
+    if (inList) html += '</' + listType + '>';
+    return html;
+  }
+
+  function inline(text) {
+    // Images inline
+    text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">');
+    // Links
+    text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+    // Bold
+    text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    // Italic
+    text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
+    // Inline code
+    text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+    return text;
+  }
+
+  function escHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  // DOM
+  var reader = document.getElementById('blogReader');
+  var readerBody = document.getElementById('readerBody');
+  var readerTitle = document.getElementById('readerTitle');
+  var readerDate = document.getElementById('readerDate');
+  var readerTag = document.getElementById('readerTag');
+  var backBtn = document.getElementById('readerBack');
+  var blogList = document.getElementById('blogList');
+
+  // Open reader
+  document.querySelectorAll('.blog-card').forEach(function (card) {
+    card.addEventListener('click', function () {
+      var post = card.dataset.post;
+      var title = card.dataset.title;
+      var date = card.dataset.date;
+      var tag = card.dataset.tag;
+
+      readerTitle.textContent = title;
+      readerDate.textContent = date;
+      readerTag.textContent = tag;
+      readerBody.innerHTML = '<p style="color:var(--muted)">Loading...</p>';
+
+      reader.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      reader.scrollTop = 0;
+
+      fetch('posts/' + post)
+        .then(function (r) {
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.text();
+        })
+        .then(function (text) {
+          // Skip the first H1 (it's already in the header)
+          text = text.replace(/^# .+\n+/, '');
+          readerBody.innerHTML = md(text);
+        })
+        .catch(function () {
+          readerBody.innerHTML = '<p style="color:var(--muted)">Cannot load post. If viewing locally, please use a local server (e.g. <code>python -m http.server</code>) or view on <a href="https://jadewangmirror.github.io/blog.html" style="color:var(--accent)">GitHub Pages</a>.</p>';
+        });
+    });
+  });
+
+  // Close reader
+  function closeReader() {
+    reader.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  backBtn.addEventListener('click', function (e) { e.preventDefault(); closeReader(); });
+
+  // ESC key closes reader
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && reader.classList.contains('open')) closeReader();
+  });
+})();
+</script>
 </body>
 </html>
